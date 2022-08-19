@@ -34,8 +34,8 @@
 }
 </style>
 <script>
-  const draggables = document.querySelectorAll('.draggable')
-  const containers = document.querySelectorAll('.container')
+  const draggables = querySelector('.draggable')
+  const containers = querySelector('.container')
 export default{
   
   }
