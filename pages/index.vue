@@ -1,79 +1,85 @@
 <template>
-<div class="wrapper">
-  <div class="container">
-    <p class="draggable" draggable="true">1</p>
-    <p class="draggable" draggable="true">2</p>
+  <div class="wrapper">
+    <div class="drop-zone" @drop="onDrop($event,1)" @dragover.prevent @dragenter.prevent>
+      <div class="drag-el" v-for="item in listOne" :key="item.title" draggable @dragstart="startDrag($event,item)">
+        {{ item.title }}
+      </div>
+    </div>
+    <div class="drop-zone" @drop="onDrop($event,2)" @dragover.prevent @dragenter.prevent>
+      <div class="drag-el" v-for="item in listTwo" :key="item.title" draggable @dragstart="startDrag($event, item)">
+        {{ item.title }}
+      </div>
+    </div>
   </div>
-  <div class="container">
-    <p class="draggable" draggable="true">3</p>
-    <p class="draggable" draggable="true">4</p>
-  </div>
-
-</div>
 </template>
 <style>
   body {
-  margin: 0;
-}
-
-.container {
-  background-color: #333;
-  padding: 1rem;
-  margin-top: 1rem;
-}
-
-.draggable {
-  padding: 1rem;
-  background-color: white;
-  border: 1px solid black;
-  cursor: move;
-}
-
-.draggable.dragging {
-  opacity: .5;
-}
-</style>
-<script>
-  const draggables = querySelector('.draggable')
-  const containers = querySelector('.container')
-export default{
-  
+    background: salmon;
+  }
+  .wrapper{
+    display: inline-flex;
+    flex-direction: row;
+    width: 100%;
+    height: 100%;
+  }
+  .drop-zone {
+    background-color: #eee;
+    margin-bottom: 10px;
+    padding: 10px;
+    width: 30%;
+    height: 30%;
   }
 
-draggables.forEach(draggable => {
-  draggable.addEventListener('dragstart', () => {
-    draggable.classList.add('dragging')
-  })
+  .drag-el {
+    background: #fff;
+    margin-bottom: 10px;
+    padding: 5px;
+  }
 
-  draggable.addEventListener('dragend', () => {
-    draggable.classList.remove('dragging')
-  })
-})
+</style>
+<script>
+  export default {
+    data() {
+      return {
+        items: [{
+            id: 0,
+            title: "Item A",
+            list: 1
+          },
+          {
+            id: 1,
+            title: "Item B",
+            list: 1
+          },
+          {
+            id: 2,
+            title: "Item C",
+            list: 2
+          },
+        ]
+      }
+    },
+    computed: {
+      listOne() {
+        return this.items.filter((item) => item.list === 1)
+      },
+      listTwo() {
+        return this.items.filter((item) => item.list === 2)
+      }
 
-containers.forEach(container => {
-  container.addEventListener('dragover', e => {
-    e.preventDefault()
-    const afterElement = getDragAfterElement(container, e.clientY)
-    const draggable = document.querySelector('.dragging')
-    if (afterElement == null) {
-      container.appendChild(draggable)
-    } else {
-      container.insertBefore(draggable, afterElement)
-    }
-  })
-})
+    },
+     methods: {
+    startDrag(evt, item) {
+      evt.dataTransfer.dropEffect = 'move'
+      evt.dataTransfer.effectAllowed = 'move'
+      evt.dataTransfer.setData('itemID', item.id)
+    },
+    onDrop(evt, list) {
+      const itemID = evt.dataTransfer.getData('itemID')
+      const item = this.items.find((item) => item.id == itemID)
+      item.list = list
+    },
+  },
+  }
 
-function getDragAfterElement(container, y) {
-  const draggableElements = [...container.querySelectorAll('.draggable:not(.dragging)')]
-
-  return draggableElements.reduce((closest, child) => {
-    const box = child.getBoundingClientRect()
-    const offset = y - box.top - box.height / 2
-    if (offset < 0 && offset > closest.offset) {
-      return { offset: offset, element: child }
-    } else {
-      return closest
-    }
-  }, { offset: Number.NEGATIVE_INFINITY }).element
-}
 </script>
