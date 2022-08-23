@@ -49,7 +49,7 @@
   .wrapper {
     width: 100vw;
     height: 100vh;
-    background: whitesmoke;
+    background: blue;
   }
 
   .table {
@@ -57,26 +57,33 @@
     height: 90%;
     margin-left: 5%;
     margin-top: 2.5%;
+    border-radius: 50px;
     background: grey;
     display: inline-flex;
     flex-direction: row;
   }
 
-  .table :first-child {
-    border: none;
+  .table :first-of-type {
+    border-left: none;
+    border-radius: 5px 0px 0px 5px;
+  }
+
+  .table:last-child {
+    border-radius: 0px 5px 5px 0px;
   }
 
   .column {
     height: 100%;
     width: 20%;
-    background: blue;
+    background: grey;
     border-left: 1px red solid;
   }
 
   .header {
-    background-color: red;
+    background-color: whitesmoke;
     padding: 5px;
-    color: white;
+    text-align: center;
+    border-radius: 0px;
   }
 
 </style>
@@ -119,4 +126,5 @@
       }
     }
   }
+
 </script>
