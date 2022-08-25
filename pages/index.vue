@@ -78,6 +78,7 @@
     onDrop(evt, list) {
       const itemID = evt.dataTransfer.getData('itemID')
       const item = this.items.find((item) => item.id == itemID)
+      console.log(list);
       item.list = list
     },
   },
