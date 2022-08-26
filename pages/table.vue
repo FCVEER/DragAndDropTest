@@ -20,7 +20,7 @@
             Artikel Groep
           </h1>
         </div>
-        <div class="dropZone"  @drop="onDrop($event,'ArtGrp')" @dragover.prevent @dragenter.prevent>
+        <div class="dropZone" @drop="onDrop($event,'ArtGrp')" @dragover.prevent @dragenter.prevent>
           <div class="dragElement" @drop="onDrop($event, 'ArtGrp')" v-for="item in ArtGrp" :key="item.id" draggable
             @dragstart="startDrag($event, item)">
             {{item.payload}}
@@ -34,12 +34,10 @@
             Artikel Nummer
           </h1>
         </div>
-        <div class="dropZone"  @drop="onDrop($event,'ArtNr')" @dragover.prevent @dragenter.prevent>
-          <div class="dragElement" v-for="item in ArtNr" :key="item.id" draggable
-            @dragstart="startDrag($event, item)">
+        <div class="dropZone" @drop="onDrop($event,'ArtNr')" @dragover.prevent @dragenter.prevent>
+          <div class="dragElement" v-for="item in ArtNr" :key="item.id" draggable @dragstart="startDrag($event, item)">
             {{item.payload}}
           </div>
-
         </div>
       </div>
       <div class="column">
@@ -48,7 +46,11 @@
             Inclusief
           </h1>
         </div>
-        <div class="dropZone"></div>
+        <div class="dropZone"  @drop="onDrop($event,'Incl')" @dragover.prevent @dragenter.prevent>
+          <div class="dragElement" v-for="item in Incl" :key="item.id" draggable @dragstart="startDrag($event, item)">
+            {{item.payload}}
+          </div>
+        </div>
       </div>
       <div class="column" id="last">
         <div class="header" id="lastHeader">
@@ -56,9 +58,16 @@
             Exclusief
           </h1>
         </div>
-        <div class="dropZone"></div>
+        <div class="dropZone" @drop="onDrop($event,'Excl')" @dragover.prevent @dragenter.prevent>
+          <div class="dragElement" v-for="item in Excl" :key="item.id" draggable @dragstart="startDrag($event, item)">
+            {{item.payload}}
+          </div>
+        </div>
       </div>
     </div>
+    <b-button @click="generateTable">
+      list
+    </b-button>
   </div>
 </template>
 
@@ -77,12 +86,14 @@
     flex-direction: row;
     box-shadow: 2px 2px 2px gray;
   }
-  .dropZone{
+
+  .dropZone {
     width: 100%;
     height: 90%;
     overflow-y: auto;
-    
+
   }
+
   #first {
     border-radius: 5px 0 0 5px;
     border-left: none;
@@ -124,7 +135,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-}
+  }
 
 </style>
 
@@ -191,6 +202,12 @@
       ArtNr() {
         return this.items.filter((item) => item.type === "ArtNr")
       },
+      Incl(){
+        return this.items.filter((item) => item.type === "Incl")
+      },
+      Excl(){
+        return this.items.filter((item) => item.type === "Excl")
+      }
     },
     methods: {
       startDrag(evt, item) {
@@ -203,7 +220,15 @@
         const item = this.items.find((item) => item.id == itemID)
         console.log(list);
         item.type = list
+      },
+      generateTable(){
+        console.log(this.Leverancier);
+        console.log(this.ArtGrp);
+        console.log(this.ArtNr)
+        console.log(this.Incl)
+        console.log(this.Excl)
       }
     }
   }
+
 </script>

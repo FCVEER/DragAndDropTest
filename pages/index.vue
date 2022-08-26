@@ -16,13 +16,15 @@
   body {
     background: salmon;
   }
-  .wrapper{
+
+  .wrapper {
     display: inline-flex;
     flex-direction: row;
     width: 100%;
     height: 100%;
     background: aqua;
   }
+
   .drop-zone {
     background-color: #eee;
     margin-bottom: 10px;
@@ -69,19 +71,19 @@
       }
 
     },
-     methods: {
-    startDrag(evt, item) {
-      evt.dataTransfer.dropEffect = 'move'
-      evt.dataTransfer.effectAllowed = 'move'
-      evt.dataTransfer.setData('itemID', item.id)
+    methods: {
+      startDrag(evt, item) {
+        evt.dataTransfer.dropEffect = 'move'
+        evt.dataTransfer.effectAllowed = 'move'
+        evt.dataTransfer.setData('itemID', item.id)
+      },
+      onDrop(evt, list) {
+        const itemID = evt.dataTransfer.getData('itemID')
+        const item = this.items.find((item) => item.id == itemID)
+        console.log(list);
+        item.list = list
+      },
     },
-    onDrop(evt, list) {
-      const itemID = evt.dataTransfer.getData('itemID')
-      const item = this.items.find((item) => item.id == itemID)
-      console.log(list);
-      item.list = list
-    },
-  },
   }
 
 </script>
